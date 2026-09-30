@@ -4,7 +4,7 @@ Contém as rotinas para cadastro de setores, registro de equipamentos e geraçã
 """
 
 __version__ = "1.1.0"
-__author__ = "Laboratório de Programação"
+__author__ = "Eduardo Aires, Guilehrme Augusto, Erick, Neto e Bezerra"
 
 # ----------------------------------------------------------------------
 # Estado Global / Lista de Resultados
