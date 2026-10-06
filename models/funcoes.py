@@ -4,7 +4,7 @@ Contém as rotinas para cadastro de setores, registro de equipamentos e geraçã
 """
 
 __version__ = "1.2.0"
-__author__ = "Sua Equipe"
+__author__ = "Eduardo Aires, Guilherme Augusto, Bezerra, Erick e Kleber"
 
 # Estado Global / Lista de Resultados
 relatorio_final = []
@@ -127,3 +127,45 @@ def apresentar_resumo_relatorio():
             print(f"{i}. {falha}")
     else:
         print("\nTODOS OS EQUIPAMENTOS ESTÃO EM CONFORMIDADE (OK).")
+
+
+def buscar_setor():
+    """Busca e exibe apenas os registros pertencentes a um setor específico."""
+    print("\n--- [4] BUSCAR SETOR ESPECÍFICO ---")
+    if not relatorio_final:
+        print("Nenhum setor cadastrado no relatório!")
+        return
+
+    nome = input("Insira o nome do setor para busca: ").strip()
+    if not nome:
+        print("Nome inválido!")
+        return
+
+    setor_alvo = f"Setor {nome}".lower()
+    encontrados = [item for item in relatorio_final if setor_alvo in item.lower()]
+
+    if encontrados:
+        print(f"\n--- REGISTROS DO '{nome.upper()}' ({len(encontrados)} itens) ---")
+        for i, item in enumerate(encontrados, start=1):
+            print(f"{i}. {item}")
+    else:
+        print(f"\nNenhum registro encontrado para o setor '{nome}'.")
+
+
+def listar_setores_cadastrados():
+    """Lista todos os setores únicos cadastrados no sistema."""
+    print("\n--- [5] LISTAR SETORES CADASTRADOS ---")
+    if not relatorio_final:
+        print("Nenhum setor cadastrado no relatório!")
+        return
+
+    setores = []
+    for item in relatorio_final:
+        nome_setor = item.split(" | ")[0]
+        if nome_setor not in setores:
+            setores.append(nome_setor)
+
+    print(f"\nTotal de setores cadastrados: {len(setores)}")
+    for i, setor in enumerate(setores, start=1):
+        print(f"{i}. {setor}")
+
