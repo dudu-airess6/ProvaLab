@@ -3,7 +3,7 @@ Módulo de Gestão e Inspeção de Segurança - Abordagem 2 (Bloqueio / Validaç
 Contém as rotinas para cadastro de setores, registro de equipamentos e geração de relatórios.
 """
 
-__version__ = "1.2.0"
+__version__ = "1.3.0"
 __author__ = "Eduardo Aires, Guilherme Augusto, Bezerra, Erick e Kleber"
 
 # Estado Global / Lista de Resultados
@@ -84,13 +84,16 @@ def excluir_setor():
         return
 
     nome = input("Insira o nome do setor a ser excluído: ").strip()
-    setor_alvo = f"Setor {nome}"
+    if not nome:
+        print("Nome inválido!")
+        return
 
+    setor_alvo = nome.lower()
     novos_registros = []
     removidos = 0
 
     for item in relatorio_final:
-        if setor_alvo.lower() in item.lower():
+        if setor_alvo in item.lower():
             removidos += 1
         else:
             novos_registros.append(item)
@@ -98,9 +101,9 @@ def excluir_setor():
     if removidos > 0:
         relatorio_final.clear()
         relatorio_final.extend(novos_registros)
-        print(f"\nSetor '{setor_alvo}' excluído com sucesso! ({removidos} registros removidos)")
+        print(f"\nSetor '{nome}' excluído com sucesso! ({removidos} registros removidos)")
     else:
-        print(f"\nNenhum registro encontrado para '{setor_alvo}'.")
+        print(f"\nNenhum registro encontrado para '{nome}'.")
 
 
 def apresentar_resumo_relatorio():
@@ -141,15 +144,15 @@ def buscar_setor():
         print("Nome inválido!")
         return
 
-    setor_alvo = f"Setor {nome}".lower()
+    setor_alvo = nome.lower()
     encontrados = [item for item in relatorio_final if setor_alvo in item.lower()]
 
     if encontrados:
-        print(f"\n--- REGISTROS DO '{nome.upper()}' ({len(encontrados)} itens) ---")
+        print(f"\n--- REGISTROS ENCONTRADOS ({len(encontrados)} itens) ---")
         for i, item in enumerate(encontrados, start=1):
             print(f"{i}. {item}")
     else:
-        print(f"\nNenhum registro encontrado para o setor '{nome}'.")
+        print(f"\nNenhum registro encontrado para '{nome}'.")
 
 
 def listar_setores_cadastrados():
@@ -168,4 +171,3 @@ def listar_setores_cadastrados():
     print(f"\nTotal de setores cadastrados: {len(setores)}")
     for i, setor in enumerate(setores, start=1):
         print(f"{i}. {setor}")
-
