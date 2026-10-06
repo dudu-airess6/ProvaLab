@@ -1,44 +1,47 @@
 """
-Módulo de Gestão e Inspeção de Segurança
+Módulo de Gestão e Inspeção de Segurança - Abordagem 2 (Bloqueio / Validação)
 Contém as rotinas para cadastro de setores, registro de equipamentos e geração de relatórios.
 """
 
-__version__ = "1.1.0"
-__author__ = "Eduardo Aires, Guilehrme Augusto, Erick, Neto e Bezerra"
+__version__ = "1.2.0"
+__author__ = "Sua Equipe"
 
-# ----------------------------------------------------------------------
 # Estado Global / Lista de Resultados
-# (Listas são mutáveis: usamos .append() e modificamos em funções)
-# ----------------------------------------------------------------------
 relatorio_final = []
 
 
+def ler_inteiro_valido(mensagem):
+    """
+    Lê uma entrada do usuário e garante que seja um número inteiro válido (>= 0).
+    Utiliza .isdigit() para validação sem lançar exceções.
+    """
+    while True:
+        entrada = input(mensagem).strip()
+        if entrada.isdigit():
+            return int(entrada)
+        print("❌ Entrada inválida! Por favor, digite apenas números inteiros (ex: 0, 1, 2...).")
+
+
 def gerar_relatorio_extintor(setor, numero, status_ok):
-    """Registra o status de inspeção de um extintor no relatório final."""
+    """Registra um Extintor no relatório final."""
     status = "APROVADO" if status_ok else "REPROVADO"
-    # f-string com :02d para formatar o número com dois dígitos (ex: #01)
     linha = f"{setor} | Extintor #{numero:02d} | Status: {status}"
     relatorio_final.append(linha)
 
 
 def gerar_relatorio_sensor(setor, numero, status_ok):
-    """Registra o status de inspeção de um sensor de fumaça no relatório final."""
+    """Registra um Sensor de Fumaça no relatório final."""
     status = "VERIFICADO" if status_ok else "NÃO VERIFICADO"
     linha = f"{setor} | Sensor Fumaça #{numero:02d} | Status: {status}"
     relatorio_final.append(linha)
 
 
-def ler_inteiro_valido(mensagem):
-    """Lê uma entrada do usuário e valida se é um número inteiro usando .isdigit()."""
-    entrada = input(mensagem).strip()
-    while not entrada.isdigit():
-        print("  [Erro] Por favor, digite apenas um número inteiro válido.")
-        entrada = input(mensagem).strip()
-    return int(entrada)
-
-
 def criar_setor():
-    """Solicita os dados de um novo setor e realiza a inspeção de seus equipamentos."""
+    """
+    Cadastra um novo setor no sistema e realiza a inspeção dos equipamentos.
+    ABORDAGEM 2: Se o usuário informar 0 extintores e 0 sensores, o cadastro é cancelado
+    por uma validação de regra de negócio (exige pelo menos 1 equipamento).
+    """
     print("\n--- [1] CRIAR E INSPECCIONAR SETOR ---")
     nome = input("Insira o nome do setor: ").strip()
     if not nome:
@@ -47,9 +50,14 @@ def criar_setor():
 
     setor_nome = f"Setor {nome}"
 
-    # Validação com .isdigit() ensinada na Aula de Strings
     extintores = ler_inteiro_valido(f"Quantidade de extintores no {setor_nome}: ")
     sensores = ler_inteiro_valido(f"Quantidade de sensores no {setor_nome}: ")
+
+    # Validação de regra de negócio
+    if extintores == 0 and sensores == 0:
+        print(f"\nErro: O '{setor_nome}' deve possuir pelo menos 1 equipamento (extintor ou sensor).")
+        print("Cadastro do setor cancelado.")
+        return
 
     print(f"\n-> Iniciando inspeção do {setor_nome}...")
 
@@ -69,7 +77,7 @@ def criar_setor():
 
 
 def excluir_setor():
-    """Remove todos os registros associados a um setor do relatório final."""
+    """Exclui todos os registros associados a um determinado setor."""
     print("\n--- [2] EXCLUIR SETOR ---")
     if not relatorio_final:
         print("Nenhum setor cadastrado no relatório!")
@@ -96,13 +104,16 @@ def excluir_setor():
 
 
 def apresentar_resumo_relatorio():
-    """Exibe a quantidade total de itens inspecionados e lista as falhas com enumerate()."""
+    """
+    Analisa a lista relatorio_final, exibe o total de itens inspecionados
+    e lista as falhas de segurança encontradas usando enumerate().
+    """
     print("\n" + "=" * 50)
     print(f"RELATÓRIO FINAL: {len(relatorio_final)} ITENS INSPECIONADOS")
     print("=" * 50)
 
     if not relatorio_final:
-        print("Nenhum setor cadastrado no relatório até o momento.")
+        print("Nenhum item cadastrado no relatório até o momento.")
         return
 
     falhas = []
@@ -112,7 +123,6 @@ def apresentar_resumo_relatorio():
 
     if falhas:
         print(f"\n--- DETECTADAS {len(falhas)} FALHAS DE SEGURANÇA ---")
-        # Uso do enumerate() ensinado na Aula 04 para exibição numerada
         for i, falha in enumerate(falhas, start=1):
             print(f"{i}. {falha}")
     else:
