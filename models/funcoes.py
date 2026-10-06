@@ -19,7 +19,7 @@ def ler_inteiro_valido(mensagem):
         entrada = input(mensagem).strip()
         if entrada.isdigit():
             return int(entrada)
-        print("❌ Entrada inválida! Por favor, digite apenas números inteiros (ex: 0, 1, 2...).")
+        print("Entrada inválida! Por favor, digite apenas números inteiros (ex: 0, 1, 2...).")
 
 
 def gerar_relatorio_extintor(setor, numero, status_ok):
@@ -39,7 +39,7 @@ def gerar_relatorio_sensor(setor, numero, status_ok):
 def criar_setor():
     """
     Cadastra um novo setor no sistema e realiza a inspeção dos equipamentos.
-    ABORDAGEM 2: Se o usuário informar 0 extintores e 0 sensores, o cadastro é cancelado
+    Se o usuário informar 0 extintores e 0 sensores, o cadastro é cancelado
     por uma validação de regra de negócio (exige pelo menos 1 equipamento).
     """
     print("\n--- [1] CRIAR E INSPECCIONAR SETOR ---")
