@@ -7,12 +7,16 @@ Contém os submódulos de funções e regras de negócio do sistema.
 from .funcoes import (
     criar_setor,
     excluir_setor,
-    apresentar_resumo_relatorio
+    apresentar_resumo_relatorio,
+    buscar_setor,
+    listar_setores_cadastrados,
 )
 
 # Define os símbolos públicos do pacote
 __all__ = [
     "criar_setor",
     "excluir_setor",
-    "apresentar_resumo_relatorio"
+    "apresentar_resumo_relatorio",
+    "buscar_setor",
+    "listar_setores_cadastrados",
 ]
